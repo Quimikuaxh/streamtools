@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grid 2x3 con cambio dinámico de imágenes</title>
+
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      row-gap: 40px;
+      column-gap: 40px;
+    }
+
+    .item {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* ✅ CONTENEDOR DE 300x300 */
+    .img-box {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ✅ IMAGEN A TAMAÑO ORIGINAL */
+    .img-box img {
+      width: auto;
+      height: auto;
+      max-width: none;
+      max-height: none;
+      display: block;
+    }
+
+    .item input {
+      position: absolute;
+      top: 310px;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body style="background-color:#00ff00;">
+
+  <div class="grid">
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img1" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(1, this.value)">
+    </div>
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img2" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(2, this.value)">
+    </div>
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img3" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(3, this.value)">
+    </div>
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img4" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(4, this.value)">
+    </div>
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img5" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(5, this.value)">
+    </div>
+
+    <div class="item">
+      <div class="img-box">
+        <img id="img6" src="INCLUDE YOUR BASE IMAGE">
+      </div>
+      <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(6, this.value)">
+    </div>
+
+  </div>
+
+  <br><br><br><br>
+
+  <select id="opciones" name="opciones">
+    <option value="pokemon-home" selected>Pokémon Home</option>
+    <option value="gif">GIFs</option>
+  </select>
+
+  <script>
+    function cambiarImagen(indice, valor) {
+      if (!valor) return;
+      const img = document.getElementById("img" + indice);
+      const imageStyle = document.getElementById("opciones").value;
+      const extension = imageStyle == "pokemon-home" ? "png" : "gif";
+      img.src = `INCLUDE YOUR BASE IMAGE PATH${imageStyle}/${valor}.${extension}`;
+    }
+  </script>
+
+</body>
+</html>
