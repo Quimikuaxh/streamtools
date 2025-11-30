@@ -8,39 +8,44 @@
   <style>
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, auto);
+      grid-template-columns: repeat(3, 300px);
       row-gap: 40px;
       column-gap: 40px;
     }
 
     .item {
-      position: relative;
-      display: inline-block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 300px;
     }
 
-    /* ✅ CONTENEDOR DE 300x300 */
     .img-box {
       width: 300px;
       height: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
-    /* ✅ IMAGEN A TAMAÑO ORIGINAL */
     .img-box img {
-      width: auto;
-      height: auto;
-      max-width: none;
-      max-height: none;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
       display: block;
     }
 
     .item input {
-      position: absolute;
-      top: 310px;
-      left: 0;
+      margin-top: 10px;
       width: 100%;
+    }
+
+    .controles {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
   </style>
 </head>
@@ -50,64 +55,101 @@
   <div class="grid">
 
     <div class="item">
-      <div class="img-box">
-        <img id="img1" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img1" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(1, this.value)">
     </div>
 
     <div class="item">
-      <div class="img-box">
-        <img id="img2" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img2" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(2, this.value)">
     </div>
 
     <div class="item">
-      <div class="img-box">
-        <img id="img3" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img3" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(3, this.value)">
     </div>
 
     <div class="item">
-      <div class="img-box">
-        <img id="img4" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img4" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(4, this.value)">
     </div>
 
     <div class="item">
-      <div class="img-box">
-        <img id="img5" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img5" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(5, this.value)">
     </div>
 
     <div class="item">
-      <div class="img-box">
-        <img id="img6" src="INCLUDE YOUR BASE IMAGE">
-      </div>
+      <div class="img-box"><img id="img6" src="./all-sprites/pokemon-home/0.png"></div>
       <input type="text" placeholder="Número de imagen" onblur="cambiarImagen(6, this.value)">
     </div>
 
   </div>
 
-  <br><br><br><br>
+  <div class="controles">
+    <select id="opciones" onchange="guardarEstado()">
+      <option value="pokemon-home">Pokémon Home</option>
+      <option value="fullImage">Imagen completa</option>
+      <option value="gif">GIFs</option>
+    </select>
 
-  <select id="opciones" name="opciones">
-    <option value="pokemon-home" selected>Pokémon Home</option>
-    <option value="gif">GIFs</option>
-  </select>
+    <button onclick="resetearTodo()">Resetear</button>
+  </div>
 
   <script>
     function cambiarImagen(indice, valor) {
       if (!valor) return;
       const img = document.getElementById("img" + indice);
       const imageStyle = document.getElementById("opciones").value;
-      const extension = imageStyle == "pokemon-home" ? "png" : "gif";
-      img.src = `INCLUDE YOUR BASE IMAGE PATH${imageStyle}/${valor}.${extension}`;
+      const extension = imageStyle === "gif" ? "gif" : "png";
+      img.src = `./all-sprites/${imageStyle}/${valor}.${extension}`;
+      guardarEstado();
     }
+
+    function guardarEstado() {
+      const estado = {
+        imageStyle: document.getElementById("opciones").value,
+        pokemon1: img1.src,
+        pokemon2: img2.src,
+        pokemon3: img3.src,
+        pokemon4: img4.src,
+        pokemon5: img5.src,
+        pokemon6: img6.src
+      };
+      localStorage.setItem("estadoPokemon", JSON.stringify(estado));
+    }
+
+    function cargarEstado() {
+      const estado = JSON.parse(localStorage.getItem("estadoPokemon"));
+      if (!estado) return;
+
+      document.getElementById("opciones").value = estado.imageStyle;
+
+      img1.src = estado.pokemon1;
+      img2.src = estado.pokemon2;
+      img3.src = estado.pokemon3;
+      img4.src = estado.pokemon4;
+      img5.src = estado.pokemon5;
+      img6.src = estado.pokemon6;
+    }
+
+    function resetearTodo() {
+      const estiloPorDefecto = "pokemon-home";
+      const rutaPorDefecto = "./all-sprites/pokemon-home/0.png";
+
+      document.getElementById("opciones").value = estiloPorDefecto;
+
+      img1.src = rutaPorDefecto;
+      img2.src = rutaPorDefecto;
+      img3.src = rutaPorDefecto;
+      img4.src = rutaPorDefecto;
+      img5.src = rutaPorDefecto;
+      img6.src = rutaPorDefecto;
+
+      guardarEstado();
+    }
+
+    window.onload = cargarEstado;
   </script>
 
 </body>
